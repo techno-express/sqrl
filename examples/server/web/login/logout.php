@@ -23,11 +23,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-    namespace sqrlexample;
-    require_once(__DIR__.'/../vendor/autoload.php');
-    session_start();
-    
-    unset($_SESSION['nonce']);
-    unset($_SESSION['generatedTime']);
-    unset($_SESSION['publicKey']);
-    header('Location: /account.php',true,303);
+
+namespace sqrlexample;
+
+require_once(__DIR__ . '/../vendor/autoload.php');
+session_start();
+
+unset($_SESSION['nonce']);
+unset($_SESSION['generatedTime']);
+unset($_SESSION['publicKey']);
+header('Location: /account.php', true, 303);

@@ -1,19 +1,19 @@
 <?php
 /*
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) 2013 John Judy
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
  * the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -21,6 +21,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Trianglman\Sqrl\Ed25519;
 
 ini_set('xdebug.max_nesting_level', 0);
@@ -104,7 +105,7 @@ class Crypto implements CryptoInterface
         if ($this->pymod(bcsub(bcpow($x, 2), $xx), $this->q) != 0) {
             $x = $this->pymod(bcmul($x, $this->I), $this->q);
         }
-        if (substr($x, -1)%2 != 0) {
+        if (substr($x, -1) % 2 != 0) {
             $x = bcsub($this->q, $x);
         }
 
@@ -131,7 +132,7 @@ class Crypto implements CryptoInterface
         }
         $Q = $this->scalarmult($P, bcdiv($e, 2, 0));
         $Q = $this->edwards($Q, $Q);
-        if (substr($e, -1)%2 == 1) {
+        if (substr($e, -1) % 2 == 1) {
             $Q = $this->edwards($Q, $P);
         }
 
@@ -150,7 +151,7 @@ class Crypto implements CryptoInterface
         foreach ($temp as $e) {
             if ($e == 1) {
                 $Q = $this->edwards(array(0, 1), $P);
-            } elseif (substr($e, -1)%2 == 1) {
+            } elseif (substr($e, -1) % 2 == 1) {
                 $Q = $this->edwards($this->edwards($Q, $Q), $P);
             } else {
                 $Q = $this->edwards($Q, $Q);
@@ -163,10 +164,10 @@ class Crypto implements CryptoInterface
     protected function bitsToString($bits)
     {
         $string = '';
-        for ($i = 0; $i < $this->b/8; $i++) {
+        for ($i = 0; $i < $this->b / 8; $i++) {
             $sum = 0;
             for ($j = 0; $j < 8; $j++) {
-                $bit = $bits[$i*8+$j];
+                $bit = $bits[$i * 8 + $j];
                 $sum += (int) $bit << $j;
             }
             $string .= chr($sum);
@@ -179,7 +180,7 @@ class Crypto implements CryptoInterface
     {
         $binary_i = '';
         do {
-            $binary_i = substr($decimal_i, -1)%2 .$binary_i;
+            $binary_i = substr($decimal_i, -1) % 2 . $binary_i;
             $decimal_i = bcdiv($decimal_i, '2', 0);
         } while (bccomp($decimal_i, '0'));
 
@@ -196,15 +197,15 @@ class Crypto implements CryptoInterface
     protected function encodepoint($P)
     {
         list($x, $y) = $P;
-        $bits = substr(str_pad(strrev($this->dec2bin_i($y)), $this->b-1, '0', STR_PAD_RIGHT), 0, $this->b-1);
-        $bits .= (substr($x, -1)%2 == 1 ? '1' : '0');
+        $bits = substr(str_pad(strrev($this->dec2bin_i($y)), $this->b - 1, '0', STR_PAD_RIGHT), 0, $this->b - 1);
+        $bits .= (substr($x, -1) % 2 == 1 ? '1' : '0');
 
         return $this->bitsToString($bits);
     }
 
     protected function bit($h, $i)
     {
-        return (ord($h[(int) bcdiv($i, 8, 0)]) >> substr($i, -3)%8) & 1;
+        return (ord($h[(int) bcdiv($i, 8, 0)]) >> substr($i, -3) % 8) & 1;
     }
 
     /**
@@ -218,10 +219,10 @@ class Crypto implements CryptoInterface
     {
         $h = $this->H($sk);
         $sum = 0;
-        for ($i = 3; $i < $this->b-2; $i++) {
+        for ($i = 3; $i < $this->b - 2; $i++) {
             $sum = bcadd($sum, bcmul(bcpow(2, $i), $this->bit($h, $i)));
         }
-        $a = bcadd(bcpow(2, $this->b-2), $sum);
+        $a = bcadd(bcpow(2, $this->b - 2), $sum);
         $A = $this->scalarmult($this->B, $a);
         $data = $this->encodepoint($A);
 
@@ -232,7 +233,7 @@ class Crypto implements CryptoInterface
     {
         $h = $this->H($m);
         $sum = 0;
-        for ($i = 0; $i < $this->b*2; $i++) {
+        for ($i = 0; $i < $this->b * 2; $i++) {
             $sum = bcadd($sum, bcmul(bcpow(2, $i), $this->bit($h, $i)));
         }
 
@@ -243,15 +244,15 @@ class Crypto implements CryptoInterface
     {
         $h = $this->H($sk);
         $a = bcpow(2, (bcsub($this->b, 2)));
-        for ($i = 3; $i < $this->b-2; $i++) {
+        for ($i = 3; $i < $this->b - 2; $i++) {
             $a = bcadd($a, bcmul(bcpow(2, $i), $this->bit($h, $i)));
         }
-        $r = $this->Hint(substr($h, $this->b/8, ($this->b/4-$this->b/8)).$m);
+        $r = $this->Hint(substr($h, $this->b / 8, ($this->b / 4 - $this->b / 8)) . $m);
         $R = $this->scalarmult($this->B, $r);
         $encR = $this->encodepoint($R);
-        $S = $this->pymod(bcadd($r, bcmul($this->Hint($encR.$pk.$m), $a)), $this->l);
+        $S = $this->pymod(bcadd($r, bcmul($this->Hint($encR . $pk . $m), $a)), $this->l);
 
-        return $encR.$this->encodeint($S);
+        return $encR . $this->encodeint($S);
     }
 
     protected function isoncurve($P)
@@ -286,11 +287,11 @@ class Crypto implements CryptoInterface
     protected function decodepoint($s)
     {
         $y = 0;
-        for ($i = 0; $i < $this->b-1; $i++) {
+        for ($i = 0; $i < $this->b - 1; $i++) {
             $y = bcadd($y, bcmul(bcpow(2, $i), $this->bit($s, $i)));
         }
         $x = $this->xrecover($y);
-        if (substr($x, -1)%2 != $this->bit($s, $this->b-1)) {
+        if (substr($x, -1) % 2 != $this->bit($s, $this->b - 1)) {
             $x = bcsub($this->q, $x);
         }
         $P = array($x, $y);
@@ -303,20 +304,20 @@ class Crypto implements CryptoInterface
 
     public function checkvalid($s, $m, $pk)
     {
-        if (strlen($s) != $this->b/4) {
+        if (strlen($s) != $this->b / 4) {
             throw new \Exception('Signature length is wrong');
         }
-        if (strlen($pk) != $this->b/8) {
-            throw new \Exception('Public key length is wrong: '.strlen($pk));
+        if (strlen($pk) != $this->b / 8) {
+            throw new \Exception('Public key length is wrong: ' . strlen($pk));
         }
-        $R = $this->decodepoint(substr($s, 0, $this->b/8));
+        $R = $this->decodepoint(substr($s, 0, $this->b / 8));
         try {
             $A = $this->decodepoint($pk);
         } catch (\Exception $e) {
             return false;
         }
-        $S = $this->decodeint(substr($s, $this->b/8, $this->b/4));
-        $h = $this->Hint($this->encodepoint($R).$pk.$m);
+        $S = $this->decodeint(substr($s, $this->b / 8, $this->b / 4));
+        $h = $this->Hint($this->encodepoint($R) . $pk . $m);
 
         return $this->scalarmult($this->B, $S) == $this->edwards($R, $this->scalarmult($A, $h));
     }

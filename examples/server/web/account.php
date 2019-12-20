@@ -23,43 +23,49 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-    namespace sqrlexample;
-    use Trianglman\Sqrl\SqrlStoreInterface;
-    require_once(__DIR__.'/../vendor/autoload.php');
-    session_start();
-    
-    $config = new \Trianglman\Sqrl\SqrlConfiguration();
-    $config->load(__DIR__.'/../config/sqrlconfig.json');
-    $store = new \Trianglman\Sqrl\SqrlStore($config);
-    
-    if (isset($_SESSION['publicKey'])) {
-        $acccount = $store->retrieveAuthenticationRecord(
-                $_SESSION['publicKey'], 
-                array(SqrlStoreInterface::SUK,  SqrlStoreInterface::VUK)
-                );
-    }
-    if (empty($account)) {
-        header('Location: /index.php',true,303);//send the user back to the index page to get a new nonce
-    }
+
+namespace sqrlexample;
+
+use Trianglman\Sqrl\SqrlStoreInterface;
+
+require_once(__DIR__ . '/../vendor/autoload.php');
+session_start();
+
+$config = new \Trianglman\Sqrl\SqrlConfiguration();
+$config->load(__DIR__ . '/../config/sqrlconfig.json');
+$store = new \Trianglman\Sqrl\SqrlStore($config);
+
+if (isset($_SESSION['publicKey'])) {
+    $acccount = $store->retrieveAuthenticationRecord(
+        $_SESSION['publicKey'],
+        array(SqrlStoreInterface::SUK,  SqrlStoreInterface::VUK)
+    );
+}
+if (empty($account)) {
+    header('Location: /index.php', true, 303); //send the user back to the index page to get a new nonce
+}
 ?>
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>SQRL Account</title>
-    </head>
-    <body>
-        <h1>You have successfully signed in using SQRL</h1>
-        
-        <ul>
-            <!--These values should be base64 encoded in the database/session, but better not to trust data I didn't make here-->
-            <li>Public key: <?php echo htmlentities(base64_encode($_SESSION['publicKey']), ENT_HTML5, 'UTF-8');?></li>
-            <li>SUK: <?php echo htmlentities($acccount['suk'], ENT_HTML5, 'UTF-8');?></li>
-            <li>VUK: <?php echo htmlentities($acccount['vuk'], ENT_HTML5, 'UTF-8');?></li>
-        </ul>
-        <p>
-            <a href="/login/logout.php">Logout</a>
-        </p>
-    </body>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>SQRL Account</title>
+</head>
+
+<body>
+    <h1>You have successfully signed in using SQRL</h1>
+
+    <ul>
+        <!--These values should be base64 encoded in the database/session, but better not to trust data I didn't make here-->
+        <li>Public key: <?php echo htmlentities(base64_encode($_SESSION['publicKey']), ENT_HTML5, 'UTF-8'); ?></li>
+        <li>SUK: <?php echo htmlentities($acccount['suk'], ENT_HTML5, 'UTF-8'); ?></li>
+        <li>VUK: <?php echo htmlentities($acccount['vuk'], ENT_HTML5, 'UTF-8'); ?></li>
+    </ul>
+    <p>
+        <a href="/login/logout.php">Logout</a>
+    </p>
+</body>
+
 </html>

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 /*
  * The MIT License (MIT)
@@ -22,6 +23,7 @@ declare(strict_types=1);
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Trianglman\Sqrl\Traits;
 
 trait Base64Url
@@ -51,10 +53,10 @@ trait Base64Url
     protected function base64UrlDecode(string $string): string
     {
         $len = strlen($string);
-        if($len%4 > 0){
-            $string = str_pad($string, 4-($len%4), '=');
+        if ($len % 4 > 0) {
+            $string = str_pad($string, 4 - ($len % 4), '=');
         }
-        $base64 = str_replace(array('-','_'), array('+','/'), $string);
+        $base64 = str_replace(array('-', '_'), array('+', '/'), $string);
         return base64_decode($base64);
     }
 }

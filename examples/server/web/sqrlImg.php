@@ -24,16 +24,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-    namespace sqrlexample;
-    require_once(__DIR__.'/../vendor/autoload.php');
-    require_once(__DIR__.'/../includes/ExampleStatefulStorage.php');
-    session_start();
-    
-    //configuration stuff
-    $config = new \Trianglman\Sqrl\SqrlConfiguration();
-    $config->load(__DIR__.'/../config/sqrlconfig.json');
-    $store = new ExampleStatefulStorage(new \PDO('mysql:host=localhost;dbname=sqrl', 'example', 'bar'),$_SERVER['REMOTE_ADDR'],$_SESSION);
-    $generator = new \Trianglman\Sqrl\SqrlGenerate($config,$store);
-    
-    header('Content-Type: image/png');
-    $generator->render(null);
+
+namespace sqrlexample;
+
+require_once(__DIR__ . '/../vendor/autoload.php');
+require_once(__DIR__ . '/../includes/ExampleStatefulStorage.php');
+session_start();
+
+//configuration stuff
+$config = new \Trianglman\Sqrl\SqrlConfiguration();
+$config->load(__DIR__ . '/../config/sqrlconfig.json');
+$store = new ExampleStatefulStorage(new \PDO('mysql:host=localhost;dbname=sqrl', 'example', 'bar'), $_SERVER['REMOTE_ADDR'], $_SESSION);
+$generator = new \Trianglman\Sqrl\SqrlGenerate($config, $store);
+
+header('Content-Type: image/png');
+$generator->render(null);

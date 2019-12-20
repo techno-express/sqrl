@@ -23,41 +23,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-    namespace sqrlexample;
-    require_once(__DIR__.'/../vendor/autoload.php');
-    require_once(__DIR__.'/../includes/ExampleStatefulStorage.php');
-    session_start();
-    
-    //configuration stuff
-    $config = new \Trianglman\Sqrl\SqrlConfiguration();
-    $config->load(__DIR__.'/../config/sqrlconfig.json');
-    $store = new ExampleStatefulStorage(new \PDO('mysql:host=localhost;dbname=sqrl', 'example', 'bar'),$_SERVER['REMOTE_ADDR'],$_SESSION);
-    $generator = new \Trianglman\Sqrl\SqrlGenerate($config,$store);
-    
-    $nonce = $generator->getNonce();
-    $sqrlUrl = $generator->getUrl();
+
+namespace sqrlexample;
+
+require_once(__DIR__ . '/../vendor/autoload.php');
+require_once(__DIR__ . '/../includes/ExampleStatefulStorage.php');
+session_start();
+
+//configuration stuff
+$config = new \Trianglman\Sqrl\SqrlConfiguration();
+$config->load(__DIR__ . '/../config/sqrlconfig.json');
+$store = new ExampleStatefulStorage(new \PDO('mysql:host=localhost;dbname=sqrl', 'example', 'bar'), $_SERVER['REMOTE_ADDR'], $_SESSION);
+$generator = new \Trianglman\Sqrl\SqrlGenerate($config, $store);
+
+$nonce = $generator->getNonce();
+$sqrlUrl = $generator->getUrl();
 ?>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>SQRL Example Server</title>
-    </head>
-    <body>
-        <h1>Welcome to the SQRL PHP Example Server</h1>
-        
-        <p>
-            This server should enable you to walk through a number of test scenarios using the SQRL protocol.
-        </p>
-        <p>
-            Please use the below link/QR code to sign in and either create a new account or view your already entered account information.
-        </p>
-        <p style="text-align: center;">
-            <a href="<?php echo $sqrlUrl;?>">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>SQRL Example Server</title>
+</head>
+
+<body>
+    <h1>Welcome to the SQRL PHP Example Server</h1>
+
+    <p>
+        This server should enable you to walk through a number of test scenarios using the SQRL protocol.
+    </p>
+    <p>
+        Please use the below link/QR code to sign in and either create a new account or view your already entered account information.
+    </p>
+    <p style="text-align: center;">
+        <a href="<?php echo $sqrlUrl; ?>">
             <img src="sqrlImg.php" title="Click or scan to log in" alt="SQRL QR Code" />
-            </a><br />
-            <a href="<?php echo $sqrlUrl;?>"><?php echo $sqrlUrl;?></a><br />
-            <a href="/login/isNonceValidated.php">Verify Login</a><!-- This should also be automated with JavaScript for a smoother UX-->
-        </p>
-    </body>
+        </a><br />
+        <a href="<?php echo $sqrlUrl; ?>"><?php echo $sqrlUrl; ?></a><br />
+        <a href="/login/isNonceValidated.php">Verify Login</a><!-- This should also be automated with JavaScript for a smoother UX-->
+    </p>
+</body>
+
 </html>

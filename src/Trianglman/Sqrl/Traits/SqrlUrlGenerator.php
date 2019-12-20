@@ -21,6 +21,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Trianglman\Sqrl\Traits;
 
 use Trianglman\Sqrl\SqrlConfiguration;
@@ -37,9 +38,9 @@ trait SqrlUrlGenerator
     protected function generateQry(string $authPath, string $nut): string
     {
         $currentPathParts = parse_url($authPath);
-        $pathAppend = (empty($currentPathParts['query'])?'?':'&').'nut=';
+        $pathAppend = (empty($currentPathParts['query']) ? '?' : '&') . 'nut=';
 
-        return $authPath.$pathAppend.$nut;
+        return $authPath . $pathAppend . $nut;
     }
 
     /**
@@ -51,12 +52,12 @@ trait SqrlUrlGenerator
      */
     protected function generateUrl(SqrlConfiguration $config, string $nut): string
     {
-        $url = ($config->getSecure() ? 's' : '').'qrl://'.$config->getDomain();
+        $url = ($config->getSecure() ? 's' : '') . 'qrl://' . $config->getDomain();
         if (strpos($config->getDomain(), '/') !== false) {
-            $extension = strlen($config->getDomain())-strpos($config->getDomain(), '/');
-            $url.= substr($this->generateQry($config->getAuthenticationPath(), $nut), $extension).'&x='.$extension;
+            $extension = strlen($config->getDomain()) - strpos($config->getDomain(), '/');
+            $url .= substr($this->generateQry($config->getAuthenticationPath(), $nut), $extension) . '&x=' . $extension;
         } else {
-            $url.= $this->generateQry($config->getAuthenticationPath(), $nut);
+            $url .= $this->generateQry($config->getAuthenticationPath(), $nut);
         }
         return $url;
     }

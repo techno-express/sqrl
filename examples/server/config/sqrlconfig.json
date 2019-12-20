@@ -5,9 +5,9 @@
     "authentication_path":"login/sqrlauth.php",
     "friendly_name":"Example SQRL Server",
     "allow_anonymous_accounts":1,
-            
+
     "nonce_max_age":"5",
-    
+
     "height":"150",
     "padding":"10",
     "nonce_salt":"replace this with some unique random data"

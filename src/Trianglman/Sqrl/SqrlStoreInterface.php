@@ -1,19 +1,19 @@
 <?php
 /*
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) 2013 John Judy
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
  * the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
  * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
@@ -21,6 +21,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
 namespace Trianglman\Sqrl;
 
 /**
@@ -30,11 +31,11 @@ namespace Trianglman\Sqrl;
  */
 interface SqrlStoreInterface
 {
-    
+
     const IDENTITY_ACTIVE = 1;
-    
+
     const IDENTITY_UNKNOWN = 2;
-    
+
     const IDENTITY_LOCKED = 3;
 
     /**
@@ -47,7 +48,7 @@ interface SqrlStoreInterface
      *
      * @return void
      */
-    public function storeNonce($nonce, $action, $key='', $previousNonce='');
+    public function storeNonce($nonce, $action, $key = '', $previousNonce = '');
 
     /**
      * Retrieves information about the supplied nut
@@ -66,46 +67,46 @@ interface SqrlStoreInterface
 
     /**
      * Checks the status of an identity key
-     * 
+     *
      * @param string $key
-     * 
+     *
      * @return int One of the class key status constants
      */
     public function checkIdentityKey($key);
-    
+
     /**
      * Activates a session
-     * 
+     *
      * @param string $requestNut The nut of the current request that is being logged in
-     * 
+     *
      * @return void
      */
     public function logSessionIn($requestNut);
-    
+
     /**
      * Stores a new identity key along with the Identity Lock information
-     * 
+     *
      * @param string $key
      * @param string $suk
      * @param string $vuk
-     * 
+     *
      * @return void
      */
-    public function createIdentity($key,$suk,$vuk);
-    
+    public function createIdentity($key, $suk, $vuk);
+
     /**
      * Flags a session as no longer valid.
-     * 
+     *
      * This should either immediatly destroy the session, or mark the session
      * in such a way that it will be destroyed the next time it is accessed.
-     * 
+     *
      * @param string $requestNut The nut of the curret request related to the session
      *      to be destroyed
-     * 
+     *
      * @return void
      */
     public function endSession($requestNut);
-    
+
     /**
      * Locks an authentication key against further use until a successful unlock
      *
@@ -114,7 +115,7 @@ interface SqrlStoreInterface
      * @return void
      */
     public function lockIdentityKey($key);
-    
+
     /**
      * Unlocks an authentication key allowing future authentication
      *
@@ -123,25 +124,25 @@ interface SqrlStoreInterface
      * @return void
      */
     public function unlockIdentityKey($key);
-    
+
     /**
      * Gets an identity's SUK value in order for the client to use the Identity Unlock protocol
-     * 
+     *
      * @param string $key The identity key
-     * 
+     *
      * @return string The SUK value
      */
     public function getIdentitySUK($key);
-    
+
     /**
      * Gets an identity's VUK value in order for the client to use the Identity Unlock protocol
-     * 
+     *
      * @param string $key The identity key
-     * 
+     *
      * @return string The VUK value
      */
     public function getIdentityVUK($key);
-    
+
     /**
      * Updates a user's key information after an identity update action
      *
@@ -153,10 +154,10 @@ interface SqrlStoreInterface
      * @return void
      */
     public function updateIdentityKey($oldKey, $newKey, $newSuk, $newVuk);
-    
+
     /**
      * Gets the current active nonce for the user's session if there is any
-     * 
+     *
      * @return string
      */
     public function getSessionNonce();
